@@ -13,20 +13,20 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-@Tag(name = "User Management", description = "APIs for user management")
+@Tag(name = "用户管理", description = "用户管理相关API")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @Operation(summary = "Get all users", description = "Retrieve a list of all users")
+    @Operation(summary = "获取所有用户", description = "获取所有用户列表")
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.findAllUsers();
         return ResponseEntity.ok(users);
     }
 
-    @Operation(summary = "Get user by ID", description = "Retrieve a user by their ID")
+    @Operation(summary = "根据ID获取用户", description = "根据ID获取用户信息")
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return userService.findUserById(id)
@@ -34,14 +34,14 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Create a new user", description = "Create a new user account")
+    @Operation(summary = "创建新用户", description = "创建新用户账户")
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         User savedUser = userService.saveUser(user);
         return ResponseEntity.ok(savedUser);
     }
 
-    @Operation(summary = "Update user", description = "Update an existing user")
+    @Operation(summary = "更新用户", description = "更新现有用户")
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
         user.setId(id);
@@ -49,7 +49,7 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
-    @Operation(summary = "Delete user", description = "Delete a user by ID")
+    @Operation(summary = "删除用户", description = "根据ID删除用户")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUserById(id);
