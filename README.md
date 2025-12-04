@@ -76,6 +76,45 @@ The application can be deployed as:
 - Fat JAR: `java -jar version-management-system-1.0.0.jar`
 - WAR file: Deploy to a servlet container like Tomcat
 
+## Database Schema
+
+The application uses the following database tables:
+
+```sql
+-- Users table
+CREATE TABLE users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    full_name VARCHAR(255),
+    role ENUM('ADMIN', 'USER', 'DEVELOPER') NOT NULL,
+    created_at DATETIME,
+    updated_at DATETIME,
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+-- Versions table
+CREATE TABLE versions (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    version_number VARCHAR(255) NOT NULL,
+    foundation_version VARCHAR(255),
+    type ENUM('FOUNDATION', 'CUSTOM') NOT NULL,
+    description TEXT,
+    database_init_sql MEDIUMTEXT,
+    deployment_info TEXT,
+    branch_name VARCHAR(255),
+    custom_requirements TEXT,
+    status ENUM('DRAFT', 'PENDING_APPROVAL', 'APPROVED', 'REJECTED') NOT NULL,
+    created_by BIGINT,
+    approved_by BIGINT,
+    created_at DATETIME,
+    updated_at DATETIME,
+    approved_at DATETIME
+);
+```
+
 ## Security
 - Basic HTTP authentication is implemented
 - Role-based access control (ADMIN, USER, DEVELOPER)

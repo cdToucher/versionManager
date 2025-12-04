@@ -4,32 +4,18 @@
 *.o
 *.obj
 *.out
-*.dll
-*.so
-*.a
-
 # Dependencies
 target/
 .gradle/
-.mypy_cache/
-.pytest_cache/
-__pycache__/
-
 # Logs and temp files
 *.log
 *.tmp
 *.swp
-
 # Environment
 .env
 .env.local
 *.env.*
-
 # Editors
 .vscode/
 .idea/
-
-# Build directories
-build/
-dist/
 ```
