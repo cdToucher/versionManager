@@ -4,7 +4,6 @@ import com.anmi.vms.entity.User;
 import com.anmi.vms.repository.UserRepository;
 import com.anmi.vms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,13 +15,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @Override
     public User saveUser(User user) {
-        // Encode password before saving
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // Password encoding should be handled before calling this method
         return userRepository.save(user);
     }
 
@@ -48,11 +43,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User user) {
-        // If password is being updated, encode it
-        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        } else {
-            // If password is not being updated, preserve the existing one
+        // Password encoding should be handled before calling this method if needed
+        // If password is not being updated, preserve the existing one
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
             User existingUser = userRepository.findById(user.getId()).orElse(null);
             if (existingUser != null) {
                 user.setPassword(existingUser.getPassword());
