@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "versions")
@@ -64,6 +65,9 @@ public class Version {
     
     @Column(name = "approved_at")
     private LocalDateTime approvedAt;
+    
+    @OneToMany(mappedBy = "version", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<VersionFile> files;
     
     public enum VersionType {
         FOUNDATION, CUSTOM

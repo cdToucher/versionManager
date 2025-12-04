@@ -1,11 +1,14 @@
 package com.anmi.vms.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -13,28 +16,39 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
             .csrf().disable()
             .authorizeRequests()
-                .antMatchers("/api/auth/**", "/api/users", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .antMatchers("/api/**").authenticated()
+                .antMatchers("/api/auth/**", "/api/users/register", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .antMatchers("/api/users/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/api/versions/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/api/version-files/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/api/roles/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/api/export/**").hasAnyRole("ADMIN", "USER")
                 .and()
             .httpBasic(); // Using basic auth for simplicity
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // In-memory authentication for development
-        auth.inMemoryAuthentication()
-            .withUser("admin").password(passwordEncoder().encode("admin123")).roles("ADMIN")
-            .and()
-            .withUser("user").password(passwordEncoder().encode("user123")).roles("USER");
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider());
     }
 }

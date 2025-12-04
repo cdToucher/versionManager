@@ -22,13 +22,20 @@ public class VersionController {
     @Autowired
     private VersionService versionService;
 
-    @Operation(summary = "Get all versions", description = "Retrieve a list of all versions with pagination")
+    @Operation(summary = "获取所有版本", description = "分页获取所有版本信息")
     @GetMapping
     public ResponseEntity<Page<Version>> getAllVersions(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Version> versions = versionService.findAllVersions(pageable);
+        return ResponseEntity.ok(versions);
+    }
+
+    @Operation(summary = "获取所有版本列表", description = "获取所有版本的列表（不分页）")
+    @GetMapping("/list")
+    public ResponseEntity<List<Version>> getAllVersionsList() {
+        List<Version> versions = versionService.findAllVersions();
         return ResponseEntity.ok(versions);
     }
 

@@ -1,12 +1,14 @@
 # Version Management System
 
 ## Project Overview
-This is a Java-based version management system designed to help software development teams manage different versions of their software products. The system provides functionality for tracking foundation versions, custom versions, deployment information, database initialization scripts, and more.
+This is a Java-based version management system designed to help software development teams manage different versions of their software products. The system provides functionality for tracking foundation versions, custom versions, deployment information, database initialization scripts, user authentication and authorization, file management, and more.
 
 ## Features
-- User management with role-based access control
+- User authentication with registration and login
+- Role-based access control (ADMIN, USER, DEVELOPER)
 - Version management with CRUD operations
 - Approval workflow for versions
+- File management for versions
 - Export functionality for version packages (ZIP/PDF)
 - RESTful API with Swagger documentation
 - MySQL database integration
@@ -23,10 +25,11 @@ This is a Java-based version management system designed to help software develop
 - Swagger API documentation
 - iText PDF generation
 - Apache POI
+- File upload functionality
 
 ## Project Structure
 ```
-src/main/java/com/example/vms/
+src/main/java/com/anmi/vms/
 ├── controller/          # REST controllers
 ├── entity/             # JPA entities
 ├── repository/         # Data repositories
@@ -61,20 +64,20 @@ The API documentation is available at:
 - API Docs: `http://localhost:8080/api-docs`
 
 ## Key Endpoints
+- Authentication: `/api/auth`
 - User Management: `/api/users`
 - Version Management: `/api/versions`
+- Version File Management: `/api/version-files`
+- Role Management: `/api/roles`
 - Export: `/api/export`
 
 ## Version Management Workflow
-1. Create a new version (status: DRAFT)
-2. Submit for approval (status: PENDING_APPROVAL)
-3. Admin approves/rejects (status: APPROVED/REJECTED)
-4. Export version package as ZIP or PDF
-
-## Deployment
-The application can be deployed as:
-- Fat JAR: `java -jar version-management-system-1.0.0.jar`
-- WAR file: Deploy to a servlet container like Tomcat
+1. Register/login to the system
+2. Create a new version (status: DRAFT)
+3. Upload related files to the version
+4. Submit for approval (status: PENDING_APPROVAL)
+5. Admin approves/rejects (status: APPROVED/REJECTED)
+6. Export version package as ZIP or PDF
 
 ## Database Schema
 
@@ -113,13 +116,34 @@ CREATE TABLE versions (
     updated_at DATETIME,
     approved_at DATETIME
 );
+
+-- Version Files table
+CREATE TABLE version_files (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    file_name VARCHAR(500) NOT NULL,
+    file_path VARCHAR(1000) NOT NULL,
+    file_type VARCHAR(100),
+    file_size BIGINT,
+    description TEXT,
+    version_id BIGINT NOT NULL,
+    uploaded_by BIGINT,
+    uploaded_at DATETIME,
+    is_active BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (version_id) REFERENCES versions(id)
+);
 ```
 
 ## Security
 - Basic HTTP authentication is implemented
 - Role-based access control (ADMIN, USER, DEVELOPER)
 - Passwords are encrypted using BCrypt
+- Authentication endpoints for registration and login
 
 ## Export Functionality
 - Export version information as PDF
 - Export complete version package as ZIP (includes PDF, SQL, deployment info, etc.)
+
+## File Management
+- Upload files to specific versions
+- Download files associated with versions
+- Manage version-related documents and resources
