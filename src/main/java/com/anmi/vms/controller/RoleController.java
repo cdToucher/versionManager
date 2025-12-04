@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/roles")
@@ -33,7 +34,7 @@ public class RoleController {
         // 过滤出特定角色的用户
         List<User> filteredUsers = users.stream()
                 .filter(user -> user.getRole() == role)
-                .toList();
+                .collect(Collectors.toList());
         return ResponseEntity.ok(filteredUsers);
     }
 
