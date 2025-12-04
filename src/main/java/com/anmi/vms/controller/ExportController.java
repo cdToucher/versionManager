@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -27,7 +28,7 @@ public class ExportController {
     @Operation(summary = "Export version as ZIP", description = "Export version information as a ZIP file containing PDF and other resources")
     @GetMapping("/version/{id}/zip")
     public ResponseEntity<ByteArrayResource> exportVersionAsZip(@PathVariable Long id) {
-        var versionOpt = versionService.findVersionById(id);
+        Optional<Version> versionOpt = versionService.findVersionById(id);
         if (versionOpt.isPresent()) {
             Version version = versionOpt.get();
             try {
@@ -89,19 +90,21 @@ public class ExportController {
     @Operation(summary = "Export version as PDF", description = "Export version information as a PDF file")
     @GetMapping("/version/{id}/pdf")
     public ResponseEntity<ByteArrayResource> exportVersionAsPdf(@PathVariable Long id) {
-        return versionService.findVersionById(id)
-                .map(version -> {
-                    byte[] pdfBytes = PdfGenerator.generateVersionInfoPdf(version);
-                    if (pdfBytes != null) {
-                        ByteArrayResource resource = new ByteArrayResource(pdfBytes);
-                        return ResponseEntity.ok()
-                                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + version.getName() + "_info.pdf")
-                                .contentType(MediaType.APPLICATION_PDF)
-                                .body(resource);
-                    } else {
-                        return ResponseEntity.internalServerError().build();
-                    }
-                })
-                .orElse(ResponseEntity.notFound().build());
+        Optional<Version> versionOpt = versionService.findVersionById(id);
+        if (versionOpt.isPresent()) {
+            Version version = versionOpt.get();
+            byte[] pdfBytes = PdfGenerator.generateVersionInfoPdf(version);
+            if (pdfBytes != null) {
+                ByteArrayResource resource = new ByteArrayResource(pdfBytes);
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + version.getName() + "_info.pdf")
+                        .contentType(MediaType.APPLICATION_PDF)
+                        .body(resource);
+            } else {
+                return ResponseEntity.internalServerError().build();
+            }
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
