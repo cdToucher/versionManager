@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Version Management System</title>
+    <title>版本管理系统</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -93,85 +93,85 @@
 <body>
     <div class="container">
         <header>
-            <h1>Version Management System</h1>
-            <p>Manage your software versions efficiently</p>
+            <h1>版本管理系统</h1>
+            <p>高效管理您的软件版本</p>
         </header>
         
         <div class="nav">
-            <a href="/swagger-ui.html">API Documentation</a>
-            <a href="#versions">Manage Versions</a>
-            <a href="#users">Manage Users</a>
-            <a href="#export">Export Packages</a>
+            <a href="/swagger-ui.html">API文档</a>
+            <a href="#versions">管理版本</a>
+            <a href="#users">管理用户</a>
+            <a href="#export">导出包</a>
         </div>
         
         <div class="section">
-            <h2>Welcome to Version Management System</h2>
+            <h2>欢迎使用版本管理系统</h2>
             <div class="card">
-                <p>This system helps software development teams manage different versions of their products, including:</p>
+                <p>该系统帮助软件开发团队管理产品的不同版本，包括：</p>
                 <ul>
-                    <li>Tracking foundation and custom versions</li>
-                    <li>Managing deployment information</li>
-                    <li>Handling database initialization scripts</li>
-                    <li>Version approval workflows</li>
-                    <li>Exporting version packages</li>
+                    <li>跟踪基础版本和自定义版本</li>
+                    <li>管理部署信息</li>
+                    <li>处理数据库初始化脚本</li>
+                    <li>版本审批工作流程</li>
+                    <li>导出版本包</li>
                 </ul>
             </div>
         </div>
         
         <div class="section" id="versions">
-            <h2>Version Management</h2>
+            <h2>版本管理</h2>
             <div class="card">
-                <h3>Create New Version</h3>
+                <h3>创建新版本</h3>
                 <form id="createVersionForm">
                     <div style="margin-bottom: 10px;">
-                        <label>Version Name:</label><br>
+                        <label>版本名称:</label><br>
                         <input type="text" id="versionName" style="width: 100%; padding: 8px;" required>
                     </div>
                     <div style="margin-bottom: 10px;">
-                        <label>Version Number:</label><br>
+                        <label>版本号:</label><br>
                         <input type="text" id="versionNumber" style="width: 100%; padding: 8px;" required>
                     </div>
                     <div style="margin-bottom: 10px;">
-                        <label>Type:</label><br>
+                        <label>类型:</label><br>
                         <select id="versionType" style="width: 100%; padding: 8px;">
-                            <option value="FOUNDATION">Foundation</option>
-                            <option value="CUSTOM">Custom</option>
+                            <option value="FOUNDATION">基础版本</option>
+                            <option value="CUSTOM">定制版本</option>
                         </select>
                     </div>
                     <div style="margin-bottom: 10px;">
-                        <label>Description:</label><br>
+                        <label>描述:</label><br>
                         <textarea id="versionDescription" style="width: 100%; padding: 8px; height: 80px;"></textarea>
                     </div>
-                    <button type="submit" class="btn">Create Version</button>
+                    <button type="submit" class="btn">创建版本</button>
                 </form>
             </div>
             
             <div class="card">
-                <h3>Available Versions</h3>
-                <p>Use the API to manage versions or check the Swagger documentation for details.</p>
-                <a href="/swagger-ui.html" class="btn">View API Documentation</a>
+                <h3>可用版本</h3>
+                <p>使用API管理版本或查看Swagger文档了解详情。</p>
+                <a href="/swagger-ui.html" class="btn">查看API文档</a>
             </div>
         </div>
         
         <div class="section" id="users">
-            <h2>User Management</h2>
+            <h2>用户管理</h2>
             <div class="card">
-                <p>Manage users and roles through the API endpoints.</p>
-                <a href="/swagger-ui.html" class="btn">View API Documentation</a>
+                <p>通过API端点管理用户和角色。</p>
+                <a href="/swagger-ui.html" class="btn">查看API文档</a>
             </div>
         </div>
         
         <div class="section" id="export">
-            <h2>Export Functionality</h2>
+            <h2>导出功能</h2>
             <div class="card">
-                <p>Export version information as ZIP packages containing PDF reports, SQL scripts, and deployment information.</p>
-                <a href="/swagger-ui.html" class="btn">View Export APIs</a>
+                <p>将版本信息导出为ZIP包，包含PDF报告、SQL脚本和部署信息。</p>
+                <a href="/swagger-ui.html" class="btn">查看导出API</a>
             </div>
         </div>
         
         <footer>
-            <p>Version Management System &copy; 2023</p>
-            <p>API Documentation: <a href="/swagger-ui.html">/swagger-ui.html</a></p>
+            <p>版本管理系统 &copy; 2023</p>
+            <p>API文档: <a href="/swagger-ui.html">/swagger-ui.html</a></p>
         </footer>
     </div>
 

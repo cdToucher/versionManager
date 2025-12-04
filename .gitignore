@@ -6,7 +6,6 @@
 *.out
 # Dependencies
 target/
-.gradle/
 # Logs and temp files
 *.log
 *.tmp

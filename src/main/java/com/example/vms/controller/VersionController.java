@@ -16,13 +16,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/versions")
-@Tag(name = "Version Management", description = "APIs for version management")
+@Tag(name = "版本管理", description = "版本管理相关API")
 public class VersionController {
 
     @Autowired
     private VersionService versionService;
 
-    @Operation(summary = "Get all versions", description = "Retrieve a list of all versions with pagination")
+    @Operation(summary = "获取所有版本", description = "分页获取所有版本列表")
     @GetMapping
     public ResponseEntity<Page<Version>> getAllVersions(
             @RequestParam(defaultValue = "0") int page,
@@ -32,7 +32,7 @@ public class VersionController {
         return ResponseEntity.ok(versions);
     }
 
-    @Operation(summary = "Get version by ID", description = "Retrieve a version by its ID")
+    @Operation(summary = "根据ID获取版本", description = "根据ID获取版本信息")
     @GetMapping("/{id}")
     public ResponseEntity<Version> getVersionById(@PathVariable Long id) {
         return versionService.findVersionById(id)
@@ -40,7 +40,7 @@ public class VersionController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Create a new version", description = "Create a new version record")
+    @Operation(summary = "创建新版本", description = "创建新版本记录")
     @PostMapping
     public ResponseEntity<Version> createVersion(@Valid @RequestBody Version version, @RequestParam Long userId) {
         // Set the creator ID
@@ -49,7 +49,7 @@ public class VersionController {
         return ResponseEntity.ok(savedVersion);
     }
 
-    @Operation(summary = "Update version", description = "Update an existing version")
+    @Operation(summary = "更新版本", description = "更新现有版本")
     @PutMapping("/{id}")
     public ResponseEntity<Version> updateVersion(@PathVariable Long id, @Valid @RequestBody Version version) {
         version.setId(id);
@@ -57,14 +57,14 @@ public class VersionController {
         return ResponseEntity.ok(updatedVersion);
     }
 
-    @Operation(summary = "Delete version", description = "Delete a version by ID")
+    @Operation(summary = "删除版本", description = "根据ID删除版本")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteVersion(@PathVariable Long id) {
         versionService.deleteVersionById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Submit version for approval", description = "Submit a version for approval")
+    @Operation(summary = "提交版本审批", description = "提交版本进行审批")
     @PostMapping("/{id}/submit-approval")
     public ResponseEntity<Version> submitForApproval(@PathVariable Long id, @RequestParam Long userId) {
         Version version = versionService.submitForApproval(id, userId);
@@ -75,7 +75,7 @@ public class VersionController {
         }
     }
 
-    @Operation(summary = "Approve version", description = "Approve a version")
+    @Operation(summary = "审批版本", description = "审批版本")
     @PostMapping("/{id}/approve")
     public ResponseEntity<Version> approveVersion(@PathVariable Long id, @RequestParam Long approverId) {
         Version version = versionService.approveVersion(id, approverId);
@@ -86,7 +86,7 @@ public class VersionController {
         }
     }
 
-    @Operation(summary = "Reject version", description = "Reject a version")
+    @Operation(summary = "拒绝版本", description = "拒绝版本")
     @PostMapping("/{id}/reject")
     public ResponseEntity<Version> rejectVersion(@PathVariable Long id, @RequestParam Long approverId) {
         Version version = versionService.rejectVersion(id, approverId);
@@ -97,21 +97,21 @@ public class VersionController {
         }
     }
 
-    @Operation(summary = "Get versions by status", description = "Retrieve versions by their status")
+    @Operation(summary = "根据状态获取版本", description = "根据状态获取版本")
     @GetMapping("/status/{status}")
     public ResponseEntity<List<Version>> getVersionsByStatus(@PathVariable Version.Status status) {
         List<Version> versions = versionService.findVersionsByStatus(status);
         return ResponseEntity.ok(versions);
     }
 
-    @Operation(summary = "Get versions by type", description = "Retrieve versions by their type")
+    @Operation(summary = "根据类型获取版本", description = "根据类型获取版本")
     @GetMapping("/type/{type}")
     public ResponseEntity<List<Version>> getVersionsByType(@PathVariable Version.VersionType type) {
         List<Version> versions = versionService.findVersionsByType(type);
         return ResponseEntity.ok(versions);
     }
 
-    @Operation(summary = "Get versions by creator", description = "Retrieve versions created by a specific user")
+    @Operation(summary = "根据创建者获取版本", description = "获取特定用户创建的版本")
     @GetMapping("/created-by/{userId}")
     public ResponseEntity<List<Version>> getVersionsByCreator(@PathVariable Long userId) {
         List<Version> versions = versionService.findVersionsByCreatedBy(userId);
